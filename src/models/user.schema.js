@@ -82,28 +82,30 @@ const userSchema = new mongoose.Schema(
             }
         ],
         // Club
-        eventsCreated: {
-            type: {
-                id: {
-                    type: String
-                },
-                name: {
-                    type: String
-                },
-                thumbnail: {
-                    type: String
-                },
-                status: {
-                    type: String,
-                    enum: ['PENDING', 'IN REVIEW', 'APPROVED'],
-                    default: 'PENDING'
-                },
-                isApproved: {
-                    type: Boolean,
-                    default: false
+        eventsCreated: [
+            {
+                type: {
+                    id: {
+                        type: String
+                    },
+                    name: {
+                        type: String
+                    },
+                    thumbnail: {
+                        type: String
+                    },
+                    status: {
+                        type: String,
+                        enum: ['PENDING', 'IN REVIEW', 'APPROVED'],
+                        default: 'PENDING'
+                    },
+                    isApproved: {
+                        type: Boolean,
+                        default: false
+                    }
                 }
             }
-        }
+        ]
     },
     { timestamps: true }
 );

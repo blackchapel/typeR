@@ -44,22 +44,16 @@ const createEvent = async (req, res) => {
             isApproved: false
         };
 
-        await User.findByIdAndUpdate(
-            req.user.id,
-            { $push: { eventsCreated: eventCreatedObj } },
-            { new: true }
-        );
+        const clubUser = await User.findById(req.user.id);
+        clubUser.eventsCreated.push(eventCreatedObj);
+        await clubUser.save();
 
         // Add event to approval body (approvalsRequested)
         let approvalsArray = req.body.approval;
         for (const iterator of approvalsArray) {
-            await User.findByIdAndUpdate(
-                iterator.id,
-                {
-                    $push: { approvalsRequested: req.approval }
-                },
-                { new: true }
-            );
+            let approvalBodyUser = await User.findByIdAndUpdate(iterator.id);
+            approvalBodyUser.approvalsRequested.push(eventCreatedObj);
+            await approvalBodyUser.save();
         }
 
         // Send email to approval body
@@ -187,5 +181,6 @@ const updateEvent = async (req, res) => {
 module.exports = {
     createEvent,
     getEventList,
-    getEventById
+    getEventById,
+    updateEvent
 };

@@ -59,7 +59,7 @@ paths:
                   name: thumbnail
                   type: file
 
-                - in: formData
+                - in: body
                   name: event
                   schema:
                       type: object
@@ -67,7 +67,7 @@ paths:
                           name:
                               type: string
                               default: ''
-                          description:
+                          -=description:
                               type: string
                               default: ''
                           date:
@@ -96,6 +96,10 @@ paths:
             responses:
                 200:
                     description: event created
+                    content:
+                      application/json:
+                      schema:
+                        $ref: '#/components/schemas/event'
                 400:
                     description: Unable to create event
                 500:
@@ -133,65 +137,90 @@ paths:
                     type: string
             responses:
                 200:
-                    description: event created
+                    description: event
+                    content:
+                      application/json:
+                        schema:
+                          $ref: '#/components/schemas/event'
                 400:
-                    description: Unable to create event
+                    description: Unable to fetch event
                 404:
                     description: Event not found
                 500:
                     description: Server error
 
     # Update Event
-    /api/event/:
-        get:
-            tags:
-                - Event
-            summary: Update Event
-            produces:
-                - application/json
-            parameters:
-                - name: id
-                  in: path
-                  required: true
-                  schema:
-                    type: string
+    # /api/event/:
+    #     put:
+    #         tags:
+    #             - Event
+    #         summary: Update Event
+    #         produces:
+    #             - application/json
+    #         parameters:
+    #             - name: id
+    #               in: path
+    #               required: true
+    #               schema:
+    #                 type: string
 
-                - in: body
-                  name: event
-                  schema:
-                      type: object
-                      properties:
-                          name:
-                              type: string
-                              default: ''
-                          description:
-                              type: string
-                              default: ''
-                          date:
-                              type: string
-                              default: ''
-                          isSelection:
-                              type: string
-                              default: ''
-                          isPayment:
-                              type: string
-                              default: ''
-                          amount:
-                              type: string
-                              default: ''
-            responses:
-                200:
-                    description: event created
-                400:
-                    description: Unable to create event
-                404:
-                    description: Event not found
-                500:
-                    description: Server error
+    #             - in: body
+    #               name: event
+    #               schema:
+    #                   type: object
+    #                   properties:
+    #                       name:
+    #                           type: string
+    #                           default: ''
+    #                       description:
+    #                           type: string
+    #                           default: ''
+    #                       date:
+    #                           type: string
+    #                           default: ''
+    #                       isSelection:
+    #                           type: string
+    #                           default: ''
+    #                       isPayment:
+    #                           type: string
+    #                           default: ''
+    #                       amount:
+    #                           type: string
+    #                           default: ''
+    #         responses:
+    #             200:
+    #                 description: event
+    #                 # content:
+    #                 #     application/json:
+    #                 #         schema:
+    #                 #             $ref: '#/components/schemas/event'
+    #             400:
+    #                 description: Unable to update event
+    #             404
+    #                 description: Event not found
+    #             500:
+    #                 description: Server error
+
+    # /api/user/get/approval-bodies/:
+    #     get:
+    #         tags:
+    #             - User
+    #         summary: Get Approval Bodies List
+    #         produces:
+    #             - application/json
+    #         responses:
+    #             200:
+    #                 description: approval bodies list
+    #             400:
+    #                 description: Unable to fetch list
+    #             404:
+    #                 description: approval bodies not found
+    #             500:
+    #                 description: Server error                 
 
 components:
   schema: 
-    events:
+    event:
       type: object
       properties:
         _id:
