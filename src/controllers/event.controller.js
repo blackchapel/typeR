@@ -20,7 +20,7 @@ const createEvent = async (req, res) => {
             },
             name: req.body.name,
             description: req.body.description,
-            thumbnail: fileUrl.url,
+            thumbnail: fileUrl.url ? fileUrl.url : null,
             date: req.body.date,
             isSelection: req.body.isSelection,
             payment: {
