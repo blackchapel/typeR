@@ -124,8 +124,54 @@ const approveEvent = async (req, res) => {
     }
 };
 
+const eventList = async (req, res) => {
+    try {
+        const user = await User.findById(req.user.id);
+
+        if (!user) {
+            res.status(404).json({
+                message: 'User not found & fetch event list failed'
+            });
+        } else {
+            let events = [];
+            for (const item of user.approvalsRequested) {
+                let event = await User.findById(item.id);
+                events.push(event);
+            }
+
+            let approvedEvents = [];
+            let approvalPendingEvents = [];
+            events.forEach((item) => {
+                user.approvalsRequested.forEach((itemInception) => {
+                    if (itemInception.id == item._id) {
+                        if (itemInception.isApproved == true) {
+                            approvedEvents.push(item);
+                        } else {
+                            approvalPendingEvents.push(item);
+                        }
+                    }
+                });
+            });
+
+            res.status(200).json({
+                message: 'Events list',
+                data: {
+                    approvedEvents,
+                    approvalPendingEvents
+                }
+            });
+        }
+    } catch (error) {
+        console.error(error.message);
+        res.status(500).json({
+            message: error.message
+        });
+    }
+};
+
 module.exports = {
     createClubAccount,
     raiseQuery,
-    approveEvent
+    approveEvent,
+    eventList
 };

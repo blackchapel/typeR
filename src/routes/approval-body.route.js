@@ -3,7 +3,8 @@ const auth = require('./../middlewares/auth.middleware');
 const {
     createClubAccount,
     raiseQuery,
-    approveEvent
+    approveEvent,
+    eventList
 } = require('../controllers/approval-body.controller');
 
 // Initializing router
@@ -25,6 +26,12 @@ router.post(
     '/approve',
     [auth.verifyJwt, auth.accountActivatedTrue, auth.roleApprovalBody],
     approveEvent
+);
+
+router.get(
+    '/event-list',
+    [auth.verifyJwt, auth.accountActivatedTrue, auth.roleApprovalBody],
+    eventList
 );
 
 module.exports = router;
