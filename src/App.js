@@ -1,24 +1,39 @@
-import logo from './logo.svg';
+import {
+  BrowserRouter as Router,
+  Routes,
+  Navigate,
+  Route,
+} from "react-router-dom";
 import './App.css';
+import Login from './components/login';
+import Home from './pages/homepage';
+import Landingpage from './pages/landingpage';
+import Signup from './components/signup';
+import { useContext, useState, useEffect } from 'react';
+import { appContext } from "./context";
+import PrivateRoute from './helpers/PrivateRoutes/PrivateRoute';
+
 
 function App() {
+  const [token, setToken] = useState(null)
+  const [user, setUser] = useState(null)
+
+  const context = { user, setUser, token, setToken };
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <>
+      <appContext.Provider value={context}>
+        <Router>
+          <Routes>
+            <Route exact path="/login" element={<Login />} />
+            <Route exact path="/signup" element={<Signup />} />
+            <Route exact path="/" element={<Landingpage />} />
+            <Route exact path="/committee" element={<PrivateRoute component={Home} />} />
+            <Route path="*" element={<Navigate replace to="/" />} />
+          </Routes>
+        </Router>
+      </appContext.Provider>
+    </>
   );
 }
 
