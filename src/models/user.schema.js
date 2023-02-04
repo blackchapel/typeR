@@ -7,32 +7,23 @@ const userSchema = new mongoose.Schema(
             required: true,
             trim: true
         },
-        username: {
-            type: String,
-            trim: true,
-            unique: true
-        },
         email: {
             type: String,
             required: true,
             trim: true,
             lowercase: true,
-            unique: true,
-            match: [
-                /^\w+([.-]?\w+)@\w+([.-]?\w+)(.\w{2,3})+$/,
-                'Please enter a valid email address'
-            ]
+            unique: true
         },
         password: {
             type: String,
             trim: true
         },
-        profilePicture: {
+        thumbnail: {
             type: String
         },
         role: {
             type: String,
-            enum: ['ADMIN', 'USER']
+            enum: ['APPROVAL BODY', 'CLUB', 'STUDENT']
         },
         loginProvider: {
             type: String,
@@ -46,9 +37,70 @@ const userSchema = new mongoose.Schema(
             type: Boolean,
             default: false
         },
-        file: {
-            type: String,
-            required: false
+        // Student
+        registeredEvents: [
+            {
+                type: {
+                    id: {
+                        type: String
+                    },
+                    name: {
+                        type: String
+                    },
+                    thumbnail: {
+                        type: String
+                    },
+                    isSelected: {
+                        type: Boolean
+                    }
+                }
+            }
+        ],
+        // Approval Body
+        approvalsRequested: [
+            {
+                type: {
+                    id: {
+                        type: String
+                    },
+                    name: {
+                        type: String
+                    },
+                    thumbnail: {
+                        type: String
+                    },
+                    status: {
+                        type: String,
+                        enum: ['PENDING', 'IN REVIEW', 'APPROVED']
+                    },
+                    isApproved: {
+                        type: Boolean,
+                        default: false
+                    }
+                }
+            }
+        ],
+        // Club
+        eventsCreated: {
+            type: {
+                id: {
+                    type: String
+                },
+                name: {
+                    type: String
+                },
+                thumbnail: {
+                    type: String
+                },
+                status: {
+                    type: String,
+                    enum: ['PENDING', 'IN REVIEW', 'APPROVED']
+                },
+                isApproved: {
+                    type: Boolean,
+                    default: false
+                }
+            }
         }
     },
     { timestamps: true }
