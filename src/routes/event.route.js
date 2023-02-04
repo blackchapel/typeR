@@ -37,7 +37,7 @@ router.put(
 );
 
 router.post(
-    '/query-response',
+    '/query-response/:id',
     [auth.verifyJwt, auth.accountActivatedTrue, auth.roleClub],
     respondQuery
 );
