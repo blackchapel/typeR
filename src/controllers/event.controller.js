@@ -116,4 +116,40 @@ const getEventList = async (req, res) => {
     }
 };
 
-module.exports = { createEvent, getEventList };
+const getEventById = async (req, res) => {
+    try {
+        const event = await Event.findById(req.params.id);
+
+        if (!event) {
+            res.status(404).json({
+                message: 'event not found'
+            });
+        } else {
+            res.status(200).json({
+                message: 'event found',
+                data: event
+            });
+        }
+    } catch (error) {
+        console.error(error.message);
+        res.status(400).json({
+            message: error.message
+        });
+    }
+};
+
+const updateEvent = async (req, res) => {
+    try {
+    } catch (error) {
+        console.error(error.message);
+        res.status(500).json({
+            message: error.message
+        });
+    }
+};
+
+module.exports = {
+    createEvent,
+    getEventList,
+    getEventById
+};
