@@ -16,7 +16,8 @@ const getUserById = async (req, res) => {
             data: user
         });
     } catch (error) {
-        res.status(400).json({
+        console.error(error.message);
+        res.status(500).json({
             message: error.message
         });
     }
@@ -52,7 +53,32 @@ const uploadFile = async (req, res) => {
             data: user
         });
     } catch (error) {
-        res.status(400).json({
+        console.error(error.message);
+        res.status(500).json({
+            result: {
+                message: error.message
+            }
+        });
+    }
+};
+
+const getApprovalBodies = async (req, res) => {
+    try {
+        const approvalBodies = await User.find({ role: 'APPROVAL BODY' });
+
+        if (!approvalBodies) {
+            res.status(404).json({
+                message: 'No approval bodies available'
+            });
+        }
+
+        res.status(200).json({
+            message: 'Approval bodies found',
+            data: approvalBodies
+        });
+    } catch (error) {
+        console.error(error.message);
+        res.status(500).json({
             result: {
                 message: error.message
             }
@@ -62,5 +88,6 @@ const uploadFile = async (req, res) => {
 
 module.exports = {
     getUserById,
-    uploadFile
+    uploadFile,
+    getApprovalBodies
 };

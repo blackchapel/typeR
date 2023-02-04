@@ -22,7 +22,7 @@ const createEvent = async (req, res) => {
             },
             name: req.body.name,
             description: req.body.description,
-            thumbnail: fileUrl.url,
+            thumbnail: fileUrl.url ? fileUrl.url : null,
             date: req.body.date,
             isSelection: req.body.isSelection,
             payment: {
@@ -79,7 +79,7 @@ const createEvent = async (req, res) => {
         });
     } catch (error) {
         console.error(error.message);
-        res.status(400).json({
+        res.status(500).json({
             message: error.message
         });
     }
@@ -112,7 +112,7 @@ const getEventList = async (req, res) => {
         });
     } catch (error) {
         console.error(error.message);
-        res.status(400).json({
+        res.status(500).json({
             message: error.message
         });
     }
