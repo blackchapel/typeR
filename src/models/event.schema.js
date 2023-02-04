@@ -99,6 +99,21 @@ const eventSchema = new mongoose.Schema(
         isPublished: {
             type: Boolean,
             default: false
+        },
+        noOfVolunteers: {
+            type: Number
+        },
+        estimatedBudget: {
+            type: Number
+        },
+        resourcesRequired: {
+            type: String
+        },
+        sponsorsAcquired: {
+            type: String
+        },
+        eventWebsite: {
+            type: String
         }
     },
     { timestamps: true }

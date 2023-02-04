@@ -22,6 +22,12 @@ const userSchema = new mongoose.Schema(
         thumbnail: {
             type: String
         },
+        websiteUrl: {
+            type: String
+        },
+        instagramUrl: {
+            type: String
+        },
         role: {
             type: String,
             enum: ['APPROVAL BODY', 'CLUB', 'STUDENT']
