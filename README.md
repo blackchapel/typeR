@@ -8,3 +8,8 @@
 - [Kunal C - App / Backend](https://github.com/blackchapel)
 - [Prateek R - Frontend / ML](https://github.com/PrateekR16)
 - [Vidhita P - Backend](https://github.com/vidhitapai)
+
+## Project Structure
+
+- [Frontend - React.js](https://github.com/blackchapel/typer/tree/frontend)
+- [Backend - Express.js](https://github.com/blackchapel/typer/tree/backend)
