@@ -93,7 +93,7 @@ const eventSchema = new mongoose.Schema(
             type: Boolean,
             default: false
         },
-        isPublish: {
+        isPublished: {
             type: Boolean,
             default: false
         }

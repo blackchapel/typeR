@@ -61,7 +61,6 @@ const createEvent = async (req, res) => {
         }
 
         // Send email to approval body
-
         for (const iterator of approvalsArray) {
             const approval = await User.findById(iterator.id);
             const approvalEmail = approval.email;
@@ -77,10 +76,44 @@ const createEvent = async (req, res) => {
             data: event
         });
     } catch (error) {
+        console.error(error.message);
         res.status(400).json({
             message: error.message
         });
     }
 };
 
-module.exports = { createEvent };
+const getEventList = async (req, res) => {
+    try {
+        const events = await Event.find({ parent: { id: req.user.id } });
+
+        let approvalPending = [];
+        let approved = [];
+        let published = [];
+        events.forEach((event) => {
+            if (event.isPublished) {
+                published.push(event);
+            } else if (event.isApproved) {
+                approved.push(event);
+            } else if (!event.isApproved) {
+                approvalPending.push(event);
+            }
+        });
+
+        res.status(200).json({
+            message: 'Events list',
+            data: {
+                published,
+                approved,
+                approvalPending
+            }
+        });
+    } catch (error) {
+        console.error(error.message);
+        res.status(400).json({
+            message: error.message
+        });
+    }
+};
+
+module.exports = { createEvent, getEventList };

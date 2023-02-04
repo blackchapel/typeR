@@ -82,7 +82,6 @@ const signUp = async (req, res) => {
 
         const newUser = new User({
             name: req.body.name,
-            // username: req.body.username,
             email: req.body.email,
             password: hashedPassword,
             role: 'STUDENT',
