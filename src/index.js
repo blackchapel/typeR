@@ -13,6 +13,7 @@ const authRoutes = require('./routes/auth.route');
 const paymentRoutes = require('./routes/payment.router');
 const userRoutes = require('./routes/user.route');
 const eventRoutes = require('./routes/event.route');
+const approvalBodyRoutes = require('./routes/approval-body.route');
 
 // Initializing an express app
 const app = express();
@@ -37,6 +38,7 @@ app.use('/api/auth', authRoutes);
 app.use('/api/payment', paymentRoutes);
 app.use('/api/user', userRoutes);
 app.use('/api/event', eventRoutes);
+app.use('/api/approval-body', approvalBodyRoutes);
 
 // Test API
 app.get('/api', (req, res) => {
