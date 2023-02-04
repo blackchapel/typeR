@@ -113,6 +113,54 @@ const auth = {
                 message: error.message
             });
         }
+    },
+
+    roleStudent: (req, res, next) => {
+        try {
+            if (req.user.role === 'STUDENT') {
+                next();
+            } else {
+                res.status(403).json({
+                    message: 'Access Denied'
+                });
+            }
+        } catch (error) {
+            res.status(500).json({
+                message: error.message
+            });
+        }
+    },
+
+    roleApprovalBody: (req, res, next) => {
+        try {
+            if (req.user.role === 'APPROVAL BODY') {
+                next();
+            } else {
+                res.status(403).json({
+                    message: 'Access Denied'
+                });
+            }
+        } catch (error) {
+            res.status(500).json({
+                message: error.message
+            });
+        }
+    },
+
+    roleClub: (req, res, next) => {
+        try {
+            if (req.user.role === 'CLUB') {
+                next();
+            } else {
+                res.status(403).json({
+                    message: 'Access Denied'
+                });
+            }
+        } catch (error) {
+            res.status(500).json({
+                message: error.message
+            });
+        }
     }
 };
 

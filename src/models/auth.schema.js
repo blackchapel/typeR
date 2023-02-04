@@ -7,7 +7,10 @@ const authSchema = new mongoose.Schema(
                 id: {
                     type: String
                 },
-                username: {
+                name: {
+                    type: String
+                },
+                thumbnail: {
                     type: String
                 },
                 email: {
@@ -15,11 +18,14 @@ const authSchema = new mongoose.Schema(
                 },
                 role: {
                     type: String,
-                    enum: ['ADMIN', 'USER']
+                    enum: ['APPROVAL BODY', 'CLUB', 'STUDENT']
                 },
                 loginProvider: {
                     type: String,
                     enum: ['GOOGLE', 'TYPE R']
+                },
+                isActivated: {
+                    type: Boolean
                 }
             }
         },

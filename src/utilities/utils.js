@@ -79,7 +79,7 @@ const generateBearerToken = async (user) => {
         {
             id: user._id,
             name: user.name,
-            // username: user.username,
+            thumbnail: user.thumbnail ? user.thumbnail : null,
             email: user.email,
             role: user.role,
             loginProvider: user.loginProvider,
@@ -95,10 +95,12 @@ const generateBearerToken = async (user) => {
         token: token,
         user: {
             id: user._id,
-            // username: user.username,
+            name: user.name,
+            thumbnail: user.thumbnail ? user.thumbnail : null,
             email: user.email,
             role: user.role,
-            loginProvider: user.loginProvider
+            loginProvider: user.loginProvider,
+            isActivated: user.isActivated
         },
         tokenType: 'BEARER',
         expireAt: expireDate,
