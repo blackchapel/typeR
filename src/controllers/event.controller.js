@@ -247,11 +247,43 @@ const shortListing = async (req, res) => {
     }
 };
 
+const publishEvent = async (req, res) => {
+    try {
+        const event = await Event.findById(req.params.id);
+
+        if (!event) {
+            res.status(404).json({
+                message: 'event not found & publishing failed'
+            });
+        } else {
+            if (!event.isApproved) {
+                res.status(400).json({
+                    message: 'approval pending'
+                });
+            } else {
+                event.isPublished = true;
+                await event.save();
+
+                res.status(200).json({
+                    message: 'event published',
+                    data: event
+                });
+            }
+        }
+    } catch (error) {
+        console.error(error.message);
+        res.status(500).json({
+            message: error.message
+        });
+    }
+};
+
 module.exports = {
     createEvent,
     getEventList,
     getEventById,
     updateEvent,
     respondQuery,
-    shortListing
+    shortListing,
+    publishEvent
 };

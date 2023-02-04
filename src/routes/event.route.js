@@ -6,7 +6,8 @@ const {
     getEventById,
     updateEvent,
     respondQuery,
-    shortListing
+    shortListing,
+    publishEvent
 } = require('../controllers/event.controller');
 const upload = require('./../utilities/multer');
 
@@ -47,6 +48,12 @@ router.post(
     '/shortlist/:id',
     [auth.verifyJwt, auth.accountActivatedTrue, auth.roleClub],
     shortListing
+);
+
+router.patch(
+    '/publish/:id',
+    [auth.verifyJwt, auth.accountActivatedTrue, auth.roleClub],
+    publishEvent
 );
 
 module.exports = router;
