@@ -71,7 +71,8 @@ const userSchema = new mongoose.Schema(
                     },
                     status: {
                         type: String,
-                        enum: ['PENDING', 'IN REVIEW', 'APPROVED']
+                        enum: ['PENDING', 'IN REVIEW', 'APPROVED'],
+                        default: 'PENDING'
                     },
                     isApproved: {
                         type: Boolean,
@@ -94,7 +95,8 @@ const userSchema = new mongoose.Schema(
                 },
                 status: {
                     type: String,
-                    enum: ['PENDING', 'IN REVIEW', 'APPROVED']
+                    enum: ['PENDING', 'IN REVIEW', 'APPROVED'],
+                    default: 'PENDING'
                 },
                 isApproved: {
                     type: Boolean,
