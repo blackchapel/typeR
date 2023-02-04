@@ -1,6 +1,10 @@
 const express = require('express');
 const auth = require('./../middlewares/auth.middleware');
-const { getUserById, uploadFile } = require('../controllers/user.controller');
+const {
+    getUserById,
+    uploadFile,
+    getApprovalBodies
+} = require('../controllers/user.controller');
 const upload = require('./../utilities/multer');
 
 // Initializing router
@@ -13,6 +17,12 @@ router.post(
     [auth.verifyJwt, auth.accountActivatedTrue],
     upload.single('file'),
     uploadFile
+);
+
+router.get(
+    '/get/approval-bodies',
+    [auth.verifyJwt, auth.accountActivatedTrue],
+    getApprovalBodies
 );
 
 module.exports = router;
