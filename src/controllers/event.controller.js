@@ -196,10 +196,59 @@ const respondQuery = async (req, res) => {
     }
 };
 
+const shortListing = async (req, res) => {
+    try {
+        const event = await Event.findById(req.params.id);
+
+        if (!event) {
+            res.status(404).json({
+                message: 'event not found & shortlisting failed'
+            });
+        } else {
+            for (const item of event.rsvp) {
+                req.body.shortListed.forEach((itemInception) => {
+                    if (item.id == itemInception) {
+                        item.isSelected = true;
+                    }
+                });
+
+                let user = await User.findById(item);
+                user.registeredEvents.forEach((itemInception) => {
+                    if (req.params.id == itemInception.id) {
+                        itemInception = true;
+                    }
+                    return itemInception;
+                });
+                await user.save();
+
+                const eventName = event.name;
+                const clubName = req.user.name;
+                const subject = `You're Shortlisted!`;
+                const body = `Dear participant, \n Congratulations! You have been shortlisted for ${eventName} organised by ${clubName}`;
+                await sendEmail(user.email, subject, body);
+
+                return item;
+            }
+            await event.save();
+
+            res.status(200).json({
+                message: 'shortlisting successful',
+                data: event
+            });
+        }
+    } catch (error) {
+        console.error(error.message);
+        res.status(500).json({
+            message: error.message
+        });
+    }
+};
+
 module.exports = {
     createEvent,
     getEventList,
     getEventById,
     updateEvent,
-    respondQuery
+    respondQuery,
+    shortListing
 };
