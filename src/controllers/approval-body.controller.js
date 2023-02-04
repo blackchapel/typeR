@@ -63,7 +63,69 @@ const raiseQuery = async (req, res) => {
     }
 };
 
+const approveEvent = async (req, res) => {
+    try {
+        const user = await User.findById(req.user.id);
+
+        if (!user) {
+            res.status(404).json({
+                message: 'user not found & approval failed'
+            });
+        } else {
+            const event = await Event.findById(req.body.eventId);
+
+            if (!event) {
+                res.status(404).json({
+                    message: 'event not found & approval failed'
+                });
+            } else {
+                user.approvalsRequested.forEach((item) => {
+                    if (item.id == req.body.eventId) {
+                        item.isApproved = true;
+                    }
+                    return item;
+                });
+                await user.save();
+
+                let approveCount = 0;
+                event.approval.forEach((item) => {
+                    if (item.id == req.user.id) {
+                        item.isApproved = true;
+                        approveCount++;
+                    } else if (item.isApproved == true) {
+                        approveCount++;
+                    }
+                    return item;
+                });
+
+                if (approveCount == event.approval.length) {
+                    event.isPending = false;
+                    event.isInReview = false;
+                    event.isApproved = true;
+                } else if (approveCount < event.approval.length) {
+                    event.isPending = false;
+                    event.isInReview = true;
+                    event.isApproved = false;
+                }
+
+                await event.save();
+
+                res.status(200).json({
+                    message: 'Event approved',
+                    data: event
+                });
+            }
+        }
+    } catch (error) {
+        console.error(error.message);
+        res.status(500).json({
+            message: error.message
+        });
+    }
+};
+
 module.exports = {
     createClubAccount,
-    raiseQuery
+    raiseQuery,
+    approveEvent
 };

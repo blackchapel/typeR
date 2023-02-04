@@ -32,7 +32,7 @@ router.get(
 );
 
 router.put(
-    '/',
+    '/:id',
     [auth.verifyJwt, auth.accountActivatedTrue, auth.roleClub],
     updateEvent
 );
