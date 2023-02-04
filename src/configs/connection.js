@@ -8,13 +8,25 @@ const connectionParameters = {
 };
 
 // Connecting to the database
-const connection = mongoose
-    .connect(process.env.MONGODB_URI, connectionParameters)
-    .then(() => {
-        console.log(`Connected to database`);
-    })
-    .catch((error) => {
-        console.log(error);
-    });
+let connection;
+if (process.env.ENVIRONMENT == 'dev') {
+    connection = mongoose
+        .connect(process.env.MONGODB_URI_DEV, connectionParameters)
+        .then(() => {
+            console.log(`Connected to database`);
+        })
+        .catch((error) => {
+            console.log(error);
+        });
+} else if (process.env.ENVIRONMENT == 'prod') {
+    connection = mongoose
+        .connect(process.env.MONGODB_URI_PROD, connectionParameters)
+        .then(() => {
+            console.log(`Connected to database`);
+        })
+        .catch((error) => {
+            console.log(error);
+        });
+}
 
 module.exports = connection;

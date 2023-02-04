@@ -84,7 +84,7 @@ const signUp = async (req, res) => {
             name: req.body.name,
             email: req.body.email,
             password: hashedPassword,
-            role: 'STUDENT',
+            role: 'APPROVAL BODY',
             loginProvider: 'TYPE R',
             isActivated: false
         });
