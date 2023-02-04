@@ -25,9 +25,6 @@ const eventSchema = new mongoose.Schema(
         thumbnail: {
             type: String
         },
-        date: {
-            type: String
-        },
         rsvp: {
             type: [
                 {
@@ -114,7 +111,11 @@ const eventSchema = new mongoose.Schema(
         },
         eventWebsite: {
             type: String
-        }
+        },
+        startDate: {
+            type: String
+        },
+        endDate: String
     },
     { timestamps: true }
 );

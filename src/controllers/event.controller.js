@@ -1,7 +1,6 @@
 const Event = require('./../models/event.schema');
 const User = require('./../models/user.schema');
 const { sendEmail } = require('./../utilities/utils');
-const fs = require('fs');
 
 const createEvent = async (req, res) => {
     try {
@@ -14,14 +13,19 @@ const createEvent = async (req, res) => {
             name: req.body.name,
             description: req.body.description,
             thumbnail: req.body.thumbnail ? req.body.thumbnail : null,
-            date: req.body.date,
             isSelection: req.body.isSelection,
             payment: {
                 isPayment: req.body.isPayment,
                 amount: req.body.isPayment ? req.body.amount : 0
             },
             approval: req.body.approval,
-            isPending: true
+            isPending: true,
+            noOfVolunteers: req.body.noOfVolunteers,
+            estimatedBudget: req.body.estimatedBudget,
+            sponsorsAcquired: req.body.sponsorsAcquired,
+            eventWebsite: req.body.eventWebsite,
+            startDate: req.body.date,
+            endDate: req.body.endDate
         });
 
         await event.save();
@@ -134,12 +138,17 @@ const updateEvent = async (req, res) => {
                 name: req.body.name,
                 description: req.body.description,
                 thumbnail: req.body.thumbnail,
-                date: req.body.date,
                 isSelection: req.body.isSelection,
                 payment: {
                     isPayment: req.body.isPayment,
                     amount: req.body.isPayment ? req.body.amount : 0
-                }
+                },
+                noOfVolunteers: req.body.noOfVolunteers,
+                estimatedBudget: req.body.estimatedBudget,
+                sponsorsAcquired: req.body.sponsorsAcquired,
+                eventWebsite: req.body.eventWebsite,
+                startDate: req.body.date,
+                endDate: req.body.endDate
             },
             { new: true }
         );
