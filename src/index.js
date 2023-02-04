@@ -12,6 +12,7 @@ const db = require('./configs/connection');
 const authRoutes = require('./routes/auth.route');
 const paymentRoutes = require('./routes/payment.router');
 const userRoutes = require('./routes/user.route');
+const eventRoutes = require('./routes/event.route');
 
 // Initializing an express app
 const app = express();
@@ -35,6 +36,7 @@ app.use('/api/docs', swaggerUI.serve, swaggerUI.setup(swaggerJSDocs));
 app.use('/api/auth', authRoutes);
 app.use('/api/payment', paymentRoutes);
 app.use('/api/user', userRoutes);
+app.use('/api/event', eventRoutes);
 
 // Test API
 app.get('/api', (req, res) => {
