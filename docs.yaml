@@ -30,15 +30,63 @@ paths:
                           name:
                               type: string
                               default: ''
-                          username:
+                          email:
                               type: string
                               default: ''
                           password:
                               type: string
                               default: ''
-                          type:
+            responses:
+                201:
+                    description: Success, new user created successfully
+                400:
+                    description: Unable to register, error
+
+    # Create Event
+    /api/event/:
+        post:
+            tags:
+                - Event
+            summary: Create Event
+            produces:
+                - application/json
+            consumes:
+                - application/json
+            parameters:
+                - in: body
+                  name: event
+                  schema:
+                      type: object
+                      properties:
+                          name:
                               type: string
                               default: ''
+                          description:
+                              type: string
+                              default: ''
+                          date:
+                              type: string
+                              default: ''
+                          isSelection:
+                              type: boolean
+                              default: false
+                          isPayment:
+                              type: boolean
+                              default: false
+                          amount:
+                              type: string
+                              default: ''
+                          approval:
+                              type: array
+                              items:
+                                  type: object
+                                  properties:
+                                      id:
+                                          type: string
+                                          default: ''
+                                      name:
+                                          type: string
+                                          default: ''
             responses:
                 201:
                     description: Success, new user created successfully
