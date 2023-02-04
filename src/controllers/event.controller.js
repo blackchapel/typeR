@@ -6,12 +6,14 @@ const fs = require('fs');
 const createEvent = async (req, res) => {
     try {
         let fileUrl;
+
         if (req.file) {
             fileUrl = await cloudinary.uploader.upload(req.file.path, {
                 public_id: req.user.id + '/event/thumbnail/' + req.file.filename
             });
             fs.unlinkSync(req.file.path);
         }
+
         let event = new Event({
             parent: {
                 id: req.user.id,
@@ -41,6 +43,7 @@ const createEvent = async (req, res) => {
             status: 'PENDING',
             isApproved: false
         };
+
         await User.findByIdAndUpdate(
             req.user.id,
             { $push: { eventsCreated: eventCreatedObj } },
@@ -85,7 +88,7 @@ const createEvent = async (req, res) => {
 const getEventList = async (req, res) => {
     try {
         const events = await Event.find({ 'parent.id': req.user.id });
-        console.log(events);
+
         let approvalPending = [];
         let approved = [];
         let published = [];
@@ -139,6 +142,40 @@ const getEventById = async (req, res) => {
 
 const updateEvent = async (req, res) => {
     try {
+        let fileUrl;
+        if (req.file) {
+            fileUrl = await cloudinary.uploader.upload(req.file.path, {
+                public_id: req.user.id + '/event/thumbnail/' + req.file.filename
+            });
+            fs.unlinkSync(req.file.path);
+        }
+
+        const event = await Event.findByIdAndUpdate(
+            req.params.id,
+            {
+                name: req.body.name,
+                description: req.body.description,
+                thumbnail: fileUrl.url ? fileUrl.url : null,
+                date: req.body.date,
+                isSelection: req.body.isSelection,
+                payment: {
+                    isPayment: req.body.isPayment,
+                    amount: req.body.isPayment ? req.body.amount : 0
+                }
+            },
+            { new: true }
+        );
+
+        if (!event) {
+            res.status(404).json({
+                message: 'event not found & updation failed'
+            });
+        } else {
+            res.status(200).json({
+                message: 'event updated',
+                data: event
+            });
+        }
     } catch (error) {
         console.error(error.message);
         res.status(500).json({
