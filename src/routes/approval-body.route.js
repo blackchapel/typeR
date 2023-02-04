@@ -4,7 +4,8 @@ const {
     createClubAccount,
     raiseQuery,
     approveEvent,
-    eventList
+    eventList,
+    clubList
 } = require('../controllers/approval-body.controller');
 
 // Initializing router
@@ -32,6 +33,12 @@ router.get(
     '/event-list',
     [auth.verifyJwt, auth.accountActivatedTrue, auth.roleApprovalBody],
     eventList
+);
+
+router.get(
+    '/club',
+    [auth.verifyJwt, auth.accountActivatedTrue, auth.roleApprovalBody],
+    clubList
 );
 
 module.exports = router;

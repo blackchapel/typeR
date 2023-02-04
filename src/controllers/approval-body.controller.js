@@ -169,9 +169,26 @@ const eventList = async (req, res) => {
     }
 };
 
+const clubList = async (req, res) => {
+    try {
+        const clubs = await User.find({ role: 'CLUB' });
+
+        res.status(200).json({
+            message: 'club list',
+            data: clubs
+        });
+    } catch (error) {
+        console.error(error.message);
+        res.status(500).json({
+            message: error.message
+        });
+    }
+};
+
 module.exports = {
     createClubAccount,
     raiseQuery,
     approveEvent,
-    eventList
+    eventList,
+    clubList
 };
