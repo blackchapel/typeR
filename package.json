@@ -1,6 +1,6 @@
 {
     "name": "typeR",
-    "version": "0.0.6",
+    "version": "0.0.7",
     "description": "Event Management",
     "main": "index.js",
     "scripts": {
