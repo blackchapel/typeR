@@ -3,7 +3,8 @@ const auth = require('./../middlewares/auth.middleware');
 const {
     getUserById,
     uploadFile,
-    getApprovalBodies
+    getApprovalBodies,
+    rsvpForStudents
 } = require('../controllers/user.controller');
 const upload = require('./../utilities/multer');
 
@@ -21,8 +22,14 @@ router.post(
 
 router.get(
     '/get/approval-bodies',
-    [auth.verifyJwt, auth.accountActivatedTrue],
+    [auth.verifyJwt, auth.accountActivatedTrue, auth.roleClub],
     getApprovalBodies
+);
+
+router.post(
+    '/student/rsvp',
+    [auth.verifyJwt, auth.accountActivatedTrue, auth.roleStudent],
+    rsvpForStudents
 );
 
 module.exports = router;
