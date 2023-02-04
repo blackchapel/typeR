@@ -17,9 +17,7 @@ const getUserById = async (req, res) => {
         });
     } catch (error) {
         res.status(400).json({
-            result: {
-                message: error.message
-            }
+            message: error.message
         });
     }
 };
