@@ -26,10 +26,4 @@ router.get(
     getApprovalBodies
 );
 
-router.post(
-    '/student/rsvp',
-    [auth.verifyJwt, auth.accountActivatedTrue, auth.roleStudent],
-    rsvpForStudents
-);
-
 module.exports = router;

@@ -14,6 +14,7 @@ const paymentRoutes = require('./routes/payment.router');
 const userRoutes = require('./routes/user.route');
 const eventRoutes = require('./routes/event.route');
 const approvalBodyRoutes = require('./routes/approval-body.route');
+const studentRoutes = require('./routes/student.route');
 
 // Initializing an express app
 const app = express();
@@ -39,6 +40,7 @@ app.use('/api/payment', paymentRoutes);
 app.use('/api/user', userRoutes);
 app.use('/api/event', eventRoutes);
 app.use('/api/approval-body', approvalBodyRoutes);
+app.use('/api/student', studentRoutes);
 
 // Test API
 app.get('/api', (req, res) => {
