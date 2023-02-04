@@ -1,7 +1,7 @@
 {
     "name": "typeR",
-    "version": "0.0.1",
-    "description": "\"type-R hackathon\"",
+    "version": "0.0.2",
+    "description": "Event Management",
     "main": "index.js",
     "scripts": {
         "test": "npm test",
