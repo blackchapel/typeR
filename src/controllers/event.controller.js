@@ -1,6 +1,6 @@
 const Event = require('./../models/event.schema');
 const User = require('./../models/user.schema');
-const { sendEmail, cloudinary } = require('./../utilities/utils');
+const { sendEmail } = require('./../utilities/utils');
 const fs = require('fs');
 
 const createEvent = async (req, res) => {
@@ -119,7 +119,7 @@ const getEventById = async (req, res) => {
         }
     } catch (error) {
         console.error(error.message);
-        res.status(400).json({
+        res.status(500).json({
             message: error.message
         });
     }
@@ -127,20 +127,12 @@ const getEventById = async (req, res) => {
 
 const updateEvent = async (req, res) => {
     try {
-        let fileUrl;
-        if (req.file) {
-            fileUrl = await cloudinary.uploader.upload(req.file.path, {
-                public_id: req.user.id + '/event/thumbnail/' + req.file.filename
-            });
-            fs.unlinkSync(req.file.path);
-        }
-
         const event = await Event.findByIdAndUpdate(
             req.params.id,
             {
                 name: req.body.name,
                 description: req.body.description,
-                thumbnail: fileUrl.url ? fileUrl.url : null,
+                thumbnail: req.body.thumbnail,
                 date: req.body.date,
                 isSelection: req.body.isSelection,
                 payment: {
@@ -169,9 +161,45 @@ const updateEvent = async (req, res) => {
     }
 };
 
+const respondQuery = async (req, res) => {
+    try {
+        const event = await Event.findById(req.params.id);
+
+        if (!event) {
+            res.status(404).json({
+                message: 'event not found & updation failed'
+            });
+        } else {
+            event.approval.forEach((item) => {
+                if (item._id == req.body.approvalId) {
+                    item.query.forEach((itemInception) => {
+                        if (itemInception._id == req.body.queryId) {
+                            itemInception.response = req.body.response;
+                            itemInception.isResponded = true;
+                        }
+                    });
+                }
+            });
+
+            await event.save();
+
+            res.status(200).json({
+                message: 'response recorded',
+                data: event
+            });
+        }
+    } catch (error) {
+        console.error(error.message);
+        res.status(500).json({
+            message: error.message
+        });
+    }
+};
+
 module.exports = {
     createEvent,
     getEventList,
     getEventById,
-    updateEvent
+    updateEvent,
+    respondQuery
 };

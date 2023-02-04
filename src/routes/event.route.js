@@ -4,7 +4,8 @@ const {
     createEvent,
     getEventList,
     getEventById,
-    updateEvent
+    updateEvent,
+    respondQuery
 } = require('../controllers/event.controller');
 const upload = require('./../utilities/multer');
 
@@ -13,34 +14,32 @@ const router = express.Router();
 
 router.post(
     '/',
-    [auth.verifyJwt],
-    [auth.accountActivatedTrue],
-    [auth.roleClub],
+    [auth.verifyJwt, auth.accountActivatedTrue, auth.roleClub],
     createEvent
 );
 
 router.get(
     '/',
-    [auth.verifyJwt],
-    [auth.accountActivatedTrue],
-    [auth.roleClub],
+    [auth.verifyJwt, auth.accountActivatedTrue, auth.roleClub],
     getEventList
 );
 
 router.get(
     '/:id',
-    [auth.verifyJwt],
-    [auth.accountActivatedTrue],
-    [auth.roleClub],
+    [auth.verifyJwt, auth.accountActivatedTrue, auth.roleClub],
     getEventById
 );
 
 router.put(
     '/',
-    [auth.verifyJwt],
-    [auth.accountActivatedTrue],
-    [auth.roleClub],
+    [auth.verifyJwt, auth.accountActivatedTrue, auth.roleClub],
     updateEvent
+);
+
+router.post(
+    '/query-response',
+    [auth.verifyJwt, auth.accountActivatedTrue, auth.roleClub],
+    respondQuery
 );
 
 module.exports = router;
