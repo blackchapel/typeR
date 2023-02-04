@@ -5,7 +5,8 @@ const eventSchema = new mongoose.Schema(
         parent: {
             type: {
                 id: {
-                    type: String
+                    type: mongoose.Schema.Types.ObjectId,
+                    ref: 'User'
                 },
                 name: {
                     type: String
@@ -31,7 +32,8 @@ const eventSchema = new mongoose.Schema(
             type: [
                 {
                     id: {
-                        type: String
+                        type: mongoose.Schema.Types.ObjectId,
+                        ref: 'User'
                     },
                     name: {
                         type: String
@@ -55,7 +57,8 @@ const eventSchema = new mongoose.Schema(
             {
                 type: {
                     id: {
-                        type: String
+                        type: mongoose.Schema.Types.ObjectId,
+                        ref: 'User'
                     },
                     name: {
                         type: String

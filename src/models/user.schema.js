@@ -42,7 +42,8 @@ const userSchema = new mongoose.Schema(
             {
                 type: {
                     id: {
-                        type: String
+                        type: mongoose.Schema.Types.ObjectId,
+                        ref: 'User'
                     },
                     name: {
                         type: String
@@ -61,7 +62,8 @@ const userSchema = new mongoose.Schema(
             {
                 type: {
                     id: {
-                        type: String
+                        type: mongoose.Schema.Types.ObjectId,
+                        ref: 'Event'
                     },
                     name: {
                         type: String
@@ -86,7 +88,8 @@ const userSchema = new mongoose.Schema(
             {
                 type: {
                     id: {
-                        type: String
+                        type: mongoose.Schema.Types.ObjectId,
+                        ref: 'Event'
                     },
                     name: {
                         type: String
