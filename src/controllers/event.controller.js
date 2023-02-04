@@ -5,15 +5,6 @@ const fs = require('fs');
 
 const createEvent = async (req, res) => {
     try {
-        let fileUrl;
-
-        if (req.file) {
-            fileUrl = await cloudinary.uploader.upload(req.file.path, {
-                public_id: req.user.id + '/event/thumbnail/' + req.file.filename
-            });
-            fs.unlinkSync(req.file.path);
-        }
-
         let event = new Event({
             parent: {
                 id: req.user.id,
@@ -22,7 +13,7 @@ const createEvent = async (req, res) => {
             },
             name: req.body.name,
             description: req.body.description,
-            thumbnail: fileUrl.url ? fileUrl.url : null,
+            thumbnail: req.body.thumbnail ? req.body.thumbnail : null,
             date: req.body.date,
             isSelection: req.body.isSelection,
             payment: {
