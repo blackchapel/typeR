@@ -1,0 +1,44 @@
+swagger: '2.0'
+info:
+    title: xREventi APIs
+    description: This is the API Documentation
+    version: 1.0
+
+    servers:
+        -url: https://typer-api.onrender.com/api
+        description: Deployed API Endpoint
+
+schemes: [http, https]
+
+paths:
+    # Signup
+    /api/auth/typer/signup:
+        post:
+            summary: Registration
+            produces:
+                - application/json
+            consumes:
+                - application/json
+            parameters:
+                - in: body
+                  name: user
+                  schema:
+                      type: object
+                      properties:
+                          name:
+                              type: string
+                              default: ''
+                          username:
+                              type: string
+                              default: ''
+                          password:
+                              type: string
+                              default: ''
+                          type:
+                              type: string
+                              default: ''
+            responses:
+                201:
+                    description: Success, new user created successfully
+                400:
+                    description: Unable to register, error

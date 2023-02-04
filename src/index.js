@@ -2,8 +2,11 @@ const express = require('express');
 const morgan = require('morgan');
 const cors = require('cors');
 const fs = require('fs');
+const swaggerUI = require('swagger-ui-express');
+const YAML = require('yamljs');
 const dotenv = require('dotenv').config();
 const db = require('./configs/connection');
+// Swagger
 
 // Importing Routes
 const authRoutes = require('./routes/auth.route');
@@ -23,6 +26,10 @@ app.use(express.urlencoded({ extended: true }));
 
 // Logging incoming requests
 app.use(morgan('dev'));
+
+// API documentations
+const swaggerJSDocs = YAML.load('./docs.yaml');
+app.use('/api/docs', swaggerUI.serve, swaggerUI.setup(swaggerJSDocs));
 
 // API Routes
 app.use('/api/auth', authRoutes);
