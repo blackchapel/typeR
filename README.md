@@ -1,7 +1,5 @@
 # Type R
 
-## SPIT Hackathon 2023
-
 ## Contributers
 
 - [Devang S - Frontend / ML](https://github.com/Devang-Shah-49)
