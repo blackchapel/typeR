@@ -28,8 +28,7 @@ const createEvent = async (req, res) => {
                 amount: req.body.isPayment ? req.body.amount : 0
             },
             approval: req.body.approval,
-            status: 'PENDING',
-            isPublished: false
+            isPending: true
         });
 
         await event.save();
@@ -85,8 +84,8 @@ const createEvent = async (req, res) => {
 
 const getEventList = async (req, res) => {
     try {
-        const events = await Event.find({ parent: { id: req.user.id } });
-
+        const events = await Event.find({ 'parent.id': req.user.id });
+        console.log(events);
         let approvalPending = [];
         let approved = [];
         let published = [];
