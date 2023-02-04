@@ -61,7 +61,8 @@ const eventSchema = new mongoose.Schema(
                         type: String
                     },
                     isApproved: {
-                        type: String
+                        type: Boolean,
+                        default: false
                     },
                     query: [
                         {
@@ -82,10 +83,12 @@ const eventSchema = new mongoose.Schema(
             }
         ],
         status: {
-            type: ['PENDING', 'IN REVIEW', 'APPROVED']
+            type: String,
+            enum: ['PENDING', 'IN REVIEW', 'APPROVED']
         },
-        isPublish: {
-            type: Boolean
+        isPublished: {
+            type: Boolean,
+            default: false
         }
     },
     { timestamps: true }
