@@ -25,7 +25,7 @@ const userSchema = new mongoose.Schema(
         websiteUrl: {
             type: String
         },
-        instagramUrl: {
+        socialUrl: {
             type: String
         },
         role: {
