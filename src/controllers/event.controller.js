@@ -5,7 +5,7 @@ const fs = require('fs');
 
 const createEvent = async (req, res) => {
     try {
-        let event = new Event({
+        const event = new Event({
             parent: {
                 id: req.user.id,
                 name: req.user.name,
@@ -28,9 +28,9 @@ const createEvent = async (req, res) => {
 
         // Add event to parent club (eventsCreated)
         let eventCreatedObj = {
-            id: req.user.id,
-            name: req.user.name,
-            thumbnail: req.user.thumbnail,
+            id: event._id,
+            name: event.name,
+            thumbnail: event.thumbnail,
             status: 'PENDING',
             isApproved: false
         };
@@ -41,6 +41,7 @@ const createEvent = async (req, res) => {
 
         // Add event to approval body (approvalsRequested)
         let approvalsArray = req.body.approval;
+        console.log(approvalsArray);
         for (const iterator of approvalsArray) {
             let approvalBodyUser = await User.findByIdAndUpdate(iterator.id);
             approvalBodyUser.approvalsRequested.push(eventCreatedObj);
@@ -171,13 +172,15 @@ const respondQuery = async (req, res) => {
             });
         } else {
             event.approval.forEach((item) => {
-                if (item._id == req.body.approvalId) {
+                if (item.id == req.body.approvalId) {
                     item.query.forEach((itemInception) => {
                         if (itemInception._id == req.body.queryId) {
                             itemInception.response = req.body.response;
                             itemInception.isResponded = true;
                         }
+                        return itemInception;
                     });
+                    return item;
                 }
             });
 
