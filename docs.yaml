@@ -38,9 +38,11 @@ paths:
                               default: ''
             responses:
                 201:
-                    description: Success, new user created successfully
+                    description: user created
                 400:
-                    description: Unable to register, error
+                    description: Unable to register
+                500:
+                    description: Server error
 
     # Create Event
     /api/event/:
@@ -51,9 +53,13 @@ paths:
             produces:
                 - application/json
             consumes:
-                - application/json
+                - multipart/form-data
             parameters:
-                - in: body
+                - in: formData
+                  name: thumbnail
+                  type: file
+                  
+                - in: formData
                   name: event
                   schema:
                       type: object
@@ -88,7 +94,27 @@ paths:
                                           type: string
                                           default: ''
             responses:
-                201:
-                    description: Success, new user created successfully
+                200:
+                    description: event created
                 400:
-                    description: Unable to register, error
+                    description: Unable to create event
+                500:
+                    description: Server error
+
+    # Event List
+    /api/event/:
+        get:
+            tags:
+                - Event
+            summary: Event List
+            produces:
+                - application/json
+            responses:
+                200:
+                    description: event created
+                400:
+                    description: Unable to create event
+                500:
+                    description: Server error
+
+                    
