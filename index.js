@@ -1,11 +1,14 @@
-const express = require('express');
-const cors = require('cors');
-const morgan = require('morgan');
+import express from 'express';
+import cors from 'cors';
+import morgan from 'morgan';
 // const axios = require('axios');
-const PDFDocument = require('pdfkit');
-const cloudinary = require('./config');
-const fs = require('fs');
-const dotenv = require('dotenv');
+import PDFDocument from 'pdfkit';
+// import * as cloudinary from './config';
+import fs from 'fs';
+import dotenv from 'dotenv';
+
+import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
+import { storage } from './config.js';
 
 // Initializing an express app
 const app = express();
@@ -309,27 +312,24 @@ app.post('/api/pdf/certificate', async (req, res) => {
 
         doc.end();
 
-        const path = 'output.pdf';
-        let file = await cloudinary.uploader.upload(
-            path,
-            { resource_type: 'pdf' },
-            {
-                public_id: req.body._id + '/certificate/' + path
-            }
+        const file = fs.readFileSync('./output.pdf');
+        const imageRef = ref(
+            storage,
+            `${req.body._id}/certificates/output.pdf`
         );
-
-        fs.unlinkSync('./output.pdf');
+        const snapshot = await uploadBytes(imageRef, file);
+        const url = await getDownloadURL(snapshot.ref);
 
         res.status(201).json({
             message: 'certificate generated',
             data: {
-                url: file.url
+                url: url
             }
         });
     } catch (error) {
-        console.error(error);
+        console.error(error.message);
         res.status(500).json({
-            message: error
+            message: error.message
         });
     }
 });
