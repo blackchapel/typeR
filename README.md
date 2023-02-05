@@ -21,6 +21,8 @@
 - Tailwind CSS
 - Axios
 
+All the technologies used are open source
+
 # Getting Started
 
 ## Prerequisites
