@@ -135,7 +135,7 @@ const eventList = async (req, res) => {
         } else {
             let events = [];
             for (const item of user.approvalsRequested) {
-                if (item.id == req.body.clubId) {
+                if (item.id == req.query.clubId) {
                     let event = await Event.findById(item.id);
                     events.push(event);
                 }
