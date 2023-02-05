@@ -220,15 +220,16 @@ const shortListing = async (req, res) => {
         } else {
             for (const item of event.rsvp) {
                 req.body.shortListed.forEach((itemInception) => {
-                    if (item.id == itemInception) {
+                    if (item.id === itemInception) {
                         item.isSelected = true;
                     }
                 });
 
-                let user = await User.findById(item);
+                let user = await User.findById(item.id);
                 user.registeredEvents.forEach((itemInception) => {
-                    if (req.params.id == itemInception.id) {
-                        itemInception = true;
+                    if (req.params.id === itemInception.id) {
+                        itemInception.isSelected = true;
+                        console.log(itemInception);
                     }
                     return itemInception;
                 });
@@ -239,8 +240,6 @@ const shortListing = async (req, res) => {
                 const subject = `You're Shortlisted!`;
                 const body = `Dear participant, \n Congratulations! You have been shortlisted for ${eventName} organised by ${clubName}`;
                 await sendEmail(user.email, subject, body);
-
-                return item;
             }
             await event.save();
 
