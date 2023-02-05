@@ -1,4 +1,5 @@
 const User = require('../models/user.schema');
+const Event = require('../models/event.schema');
 
 const rsvpForStudents = async (req, res) => {
     try {

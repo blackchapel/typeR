@@ -302,7 +302,11 @@ const sendCertificates = async (req, res) => {
                     message: 'no registrations for events'
                 });
             } else {
-                if (!event.isSelected) {
+                if (
+                    event.isSelection == false ||
+                    event.isSelection == undefined ||
+                    event.isSelection == null
+                ) {
                     for (const item of event.rsvp) {
                         const res = await axios.post(
                             'https://typer-pdf-generate-api/api/pdf/certificate',
@@ -321,7 +325,7 @@ const sendCertificates = async (req, res) => {
                     for (const item of event.rsvp) {
                         if (item.isSelected) {
                             const res = await axios.post(
-                                'https://typer-pdf-generate-api/api/pdf/certificate',
+                                'https://typer-pdf-generate-api-production.up.railway.app/api/pdf/certificate',
                                 {
                                     _id: item.id,
                                     name: item.name

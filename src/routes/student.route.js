@@ -6,7 +6,7 @@ const { rsvpForStudents } = require('../controllers/student.controller');
 const router = express.Router();
 
 router.post(
-    '/student/rsvp',
+    '/rsvp',
     [auth.verifyJwt, auth.accountActivatedTrue, auth.roleStudent],
     rsvpForStudents
 );
