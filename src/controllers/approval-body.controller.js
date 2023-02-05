@@ -80,7 +80,7 @@ const approveEvent = async (req, res) => {
                 });
             } else {
                 user.approvalsRequested.forEach((item) => {
-                    if (item.id == req.body.eventId) {
+                    if (item.id.toString() === req.body.eventId) {
                         item.isApproved = true;
                     }
                     return item;
@@ -89,7 +89,7 @@ const approveEvent = async (req, res) => {
 
                 let approveCount = 0;
                 event.approval.forEach((item) => {
-                    if (item.id == req.user.id) {
+                    if (item.id.toString() == req.user.id) {
                         item.isApproved = true;
                         approveCount++;
                     } else if (item.isApproved == true) {
