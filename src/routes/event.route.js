@@ -3,13 +3,13 @@ const auth = require('./../middlewares/auth.middleware');
 const {
     createEvent,
     getEventList,
+    getEventListNoAuth,
     getEventById,
     updateEvent,
     respondQuery,
     shortListing,
     publishEvent,
-    sendCertificates,
-    getEventListNoAuth
+    sendCertificates
 } = require('../controllers/event.controller');
 const upload = require('./../utilities/multer');
 
@@ -64,6 +64,6 @@ router.post(
     sendCertificates
 );
 
-router.get('/no-auth', getEventListNoAuth);
+router.get('/list/no-auth', getEventListNoAuth);
 
 module.exports = router;

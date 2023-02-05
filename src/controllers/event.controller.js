@@ -388,11 +388,11 @@ const sendCertificates = async (req, res) => {
 module.exports = {
     createEvent,
     getEventList,
+    getEventListNoAuth,
     getEventById,
     updateEvent,
     respondQuery,
     shortListing,
     publishEvent,
-    sendCertificates,
-    getEventListNoAuth
+    sendCertificates
 };
