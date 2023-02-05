@@ -57,8 +57,7 @@ const eventSchema = new mongoose.Schema(
             {
                 type: {
                     id: {
-                        type: mongoose.Schema.Types.ObjectId,
-                        ref: 'User'
+                        type: String
                     },
                     name: {
                         type: String
