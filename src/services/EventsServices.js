@@ -49,12 +49,32 @@ const publishEvent = async (token, id) => {
     return res
 }
 
+const sendCertificates = async (token, id) => {
+    const res = await httpCommon.post(`/api/event/send-certificates/${id}`, {
+        headers: {
+            'Authorization': `Bearer ${token}`,
+            'Content-Type': 'application/json',
+        }
+    });
+    return res
+}
 
+const shortlistStudents = async (data, token, id) => {
+    const res = await httpCommon.post(`/api/event/shortlist/${id}`,JSON.stringify(data), {
+        headers: {
+            'Authorization': `Bearer ${token}`,
+            'Content-Type': 'application/json',
+        }
+    });
+    return res
+}
 
 export default {
     createEvent,
     getEvents,
     getApprovalBodies,
     updateEvent,
-    publishEvent
+    publishEvent,
+    sendCertificates,
+    shortlistStudents,
 }

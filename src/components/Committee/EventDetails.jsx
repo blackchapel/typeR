@@ -13,6 +13,7 @@ import {
 } from "firebase/storage";
 import { storage } from "../../firebase/config";
 import EventsServices from "../../services/EventsServices";
+import ClassNameGenerator from "@mui/utils/ClassNameGenerator";
 
 function classNames(...classes) {
   return classes.filter(Boolean).join(" ");
@@ -43,6 +44,9 @@ const EventDetails = ({ item }) => {
     });
   };
   const [sendCerti, setSendCerti] = useState([]);
+  const [shortlist, setShortlist] = useState({
+    shortListed: [],
+  });
   const [payload, setPayload] = useState({
     name: obj?.name,
     description: obj?.description,
@@ -59,7 +63,14 @@ const EventDetails = ({ item }) => {
     // ],
     rsvp: [],
   });
-  const sendCertificates = async () => {};
+  const handleCertificates = async () => {
+    await EventsServices.sendCertificates(
+      localStorage.getItem("appToken"),
+      obj?._id
+    ).then((res) => {
+      console.log(res);
+    });
+  };
   const handleSubmit = async () => {
     setLoad(true);
     await EventsServices.updateEvent(
@@ -80,6 +91,17 @@ const EventDetails = ({ item }) => {
       console.log(res);
     });
   };
+
+  const shortlistStudents = async () => {
+    await EventsServices.sendShortList(
+      shortlist,
+      localStorage.getItem("appToken"),
+      obj?._id
+    ).then((res) => {
+      console.log(res);
+    });
+  };
+  console.log(shortlist);
 
   return (
     <>
@@ -425,122 +447,82 @@ const EventDetails = ({ item }) => {
             <Tab.Panel>
               <>
                 <div className="m-8 lg:m-10">
-                  <div className="relative overflow-x-auto shadow-md shadow-gunmetal sm:rounded-lg">
-                    <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400">
-                      <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
-                        <tr>
-                          <th scope="col" className="lg:text-lg px-6 py-3">
-                            Student Name
-                          </th>
-                          <th scope="col" className="lg:text-lg px-6 py-3">
-                            Id
-                          </th>
-                          {/* <th scope="col" className="px-6 py-3">
-                    Event
-                </th> */}
-                          {/* <th scope="col" className="px-6 py-3">
-                    Price
-                </th> */}
-                          <th scope="col" className="lg:text-lg px-6 py-3">
-                            Is Student Selected?
-                            <button className="ml-8 inline-flex items-center justify-center whitespace-nowrap rounded-md border border-transparent bg-green-500 px-4 py-1 text-base font-medium text-white shadow-sm hover:bg-green-600">
-                              Send
-                            </button>
-                          </th>
-                          {/* <th scope="col" className="lg:text-lg px-6 py-3">
-                    Send Certificate
-                    <button
-                      onClick={sendCertificates}
-                      className="ml-8 inline-flex items-center justify-end whitespace-nowrap rounded-md border border-transparent bg-green-500 px-4 py-1 text-base font-medium text-white shadow-sm hover:bg-green-600"
-                    >
-                     Send
-                    </button>
-                </th> */}
-                        </tr>
-                      </thead>
-                      <tbody>
-                        {obj?.rsvp?.map((i) => {
-                          <tr className="bg-white border-b dark:bg-gray-900 dark:border-gray-700">
-                            <th
-                              scope="row"
-                              class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
-                            >
-                              {i?.name}
+                  <div className="relative overflow-x-auto shadow-md  sm:rounded-lg">
+                    <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
+                      <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
+                        <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+                          <tr>
+                            <th scope="col" class="px-6 py-3">
+                              Student Name
                             </th>
-                            <td className="px-6 py-4">{i?.id}</td>
-                            <td className="px-6 py-4">
-                              <button>
-                                <input
-                                  id="tableSelection"
-                                  type="checkbox"
-                                  checked={i?.isSelected}
-                                  defaultChecked={i?.isSelected}
-                                  onChange={(e) => {
-                                    var updatedList = [...checked];
-                                    if (e.target.checked) {
-                                      updatedList = [
-                                        ...checked,
-                                        {
-                                          id: i?.id,
-                                        },
-                                      ];
-                                    } else {
-                                      updatedList.splice(
-                                        checked.indexOf(e.target.value),
-                                        1
-                                      );
-                                    }
-                                    setChecked(updatedList);
-                                    setPayload({
-                                      ...payload,
-                                      rsvp: updatedList,
-                                    });
-                                  }}
-                                  className="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500"
-                                />
-                              </button>
-                            </td>
-                            {/* <td className="px-6 py-4">
-                    <button >
-                    <input
-                      id="tableCerti"
-                      type="checkbox"
-                      // checked={i?.se}
-                      // defaultChecked={i?.isSelected}
-                      onChange={(e) => {
-                        var updatedList1 = [...checked1];
-                        if (e.target.checked) {
-                          updatedList1 = [
-                            ...checked1, {
-                              id: i?.id,
-                            }
-                          ]
-                        } else {
-                          updatedList1.splice(
-                            checked1.indexOf(e.target.value),
-                            1
-                          );
-                      }
-                      setChecked1(updatedList1);
-                      setSendCerti(updatedList1);
-                      }
-                      }
-                      className="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500"
-                    />
-                    </button>
-                </td> */}
-                          </tr>;
-                        })}
-                      </tbody>
-                    </table>
+                            <th scope="col" class="px-6 py-3">
+                              ID
+                            </th>
+                            <th scope="col" class="px-6 py-3">
+                              Action
+                            </th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          {obj?.rsvp.map((student) => (
+                            <>
+                              <tr class="bg-white border-b dark:bg-gray-900 dark:border-gray-700">
+                                <th
+                                  scope="row"
+                                  class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
+                                >
+                                  {student.name}
+                                </th>
+                                <td class="px-6 py-4">{student.id}</td>
+                                <td class="px-6 py-4 items-center">
+                                  <input
+                                    id="comments"
+                                    name="comments"
+                                    type="checkbox"
+                                    onChange={(event) => {
+                                      var updatedList = [...checked];
+                                      if (event.target.checked) {
+                                        updatedList = [
+                                          ...checked,
+                                          {
+                                            id: student.id,
+                                          },
+                                        ];
+                                      } else {
+                                        updatedList.splice(
+                                          checked.indexOf(event.target.value),
+                                          1
+                                        );
+                                      }
+                                      setChecked(updatedList);
+                                      setShortlist(updatedList);
+                                    }}
+                                    className="h-4 w-4 rounded border-gray-400 text-burntsienna"
+                                  />
+                                </td>
+                              </tr>
+                            </>
+                          ))}
+                        </tbody>
+                      </table>
+                    </div>
                   </div>
                   <div className="lg:text-lg my-16">
                     Send Certificates for event participation?
                     <button
-                      onClick={sendCertificates}
+                      onClick={handleCertificates}
                       className="ml-8 inline-flex items-center justify-end whitespace-nowrap rounded-md border border-transparent bg-green-500 px-4 py-1 text-base font-medium text-white shadow-sm hover:bg-green-600"
                     >
                       Send
+                    </button>
+                  </div>
+                  <div className="lg:text-lg my-16">
+                    Shortlist Participants
+                    <button
+                      onClick={shortlistStudents}
+                      className="ml-8 inline-flex items-center justify-end whitespace-nowrap rounded-md border border-transparent bg-green-500 px-4 py-1 text-base font-medium text-white shadow-sm hover:bg-green-600"
+                    >
+                      Shortlist
                     </button>
                   </div>
                   {/* <button className="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500"> </button> */}
