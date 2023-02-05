@@ -118,7 +118,9 @@ const eventSchema = new mongoose.Schema(
         startDate: {
             type: String
         },
-        endDate: String
+        endDate: {
+            type: String
+        }
     },
     { timestamps: true }
 );

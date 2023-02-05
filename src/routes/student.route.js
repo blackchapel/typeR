@@ -1,14 +1,23 @@
 const express = require('express');
 const auth = require('./../middlewares/auth.middleware');
-const { rsvpForStudents } = require('../controllers/student.controller');
+const {
+    rsvpForStudents,
+    eventsList
+} = require('../controllers/student.controller');
 
 // Initializing router
 const router = express.Router();
 
 router.post(
-    '/student/rsvp',
+    '/rsvp',
     [auth.verifyJwt, auth.accountActivatedTrue, auth.roleStudent],
     rsvpForStudents
+);
+
+router.get(
+    '/event-list',
+    [auth.verifyJwt, auth.accountActivatedTrue, auth.roleStudent],
+    eventsList
 );
 
 module.exports = router;

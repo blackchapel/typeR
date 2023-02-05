@@ -143,17 +143,19 @@ const eventList = async (req, res) => {
 
             let approvedEvents = [];
             let approvalPendingEvents = [];
-            events.forEach((item) => {
-                user.approvalsRequested.forEach((itemInception) => {
-                    if (itemInception.id == item._id) {
+            console.log(events);
+            if (!(events.length === 0))
+                events.forEach((item) => {
+                    user.approvalsRequested.forEach((itemInception) => {
+                        // if (itemInception.id == item._id) {
                         if (itemInception.isApproved == true) {
                             approvedEvents.push(item);
                         } else {
                             approvalPendingEvents.push(item);
                         }
-                    }
+                        // }
+                    });
                 });
-            });
 
             res.status(200).json({
                 message: 'Events list',
