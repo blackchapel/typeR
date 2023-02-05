@@ -109,6 +109,39 @@ const getEventList = async (req, res) => {
     }
 };
 
+const getEventListNoAuth = async (req, res) => {
+    try {
+        const events = await Event.find();
+
+        let approvalPending = [];
+        let approved = [];
+        let published = [];
+        events.forEach((event) => {
+            if (event.isPublished) {
+                published.push(event);
+            } else if (event.isApproved) {
+                approved.push(event);
+            } else if (!event.isApproved) {
+                approvalPending.push(event);
+            }
+        });
+
+        res.status(200).json({
+            message: 'Events list',
+            data: {
+                published,
+                approved,
+                approvalPending
+            }
+        });
+    } catch (error) {
+        console.error(error.message);
+        res.status(500).json({
+            message: error.message
+        });
+    }
+};
+
 const getEventById = async (req, res) => {
     try {
         const event = await Event.findById(req.params.id);
@@ -309,7 +342,7 @@ const sendCertificates = async (req, res) => {
                 ) {
                     for (const item of event.rsvp) {
                         const res = await axios.post(
-                            'https://typer-pdf-generate-api/api/pdf/certificate',
+                            'https://typer-pdf-generate-api-production.up.railway.app/api/pdf/certificate',
                             {
                                 _id: item.id,
                                 name: item.name
@@ -361,5 +394,6 @@ module.exports = {
     respondQuery,
     shortListing,
     publishEvent,
-    sendCertificates
+    sendCertificates,
+    getEventListNoAuth
 };
