@@ -35,6 +35,9 @@ const eventSchema = new mongoose.Schema(
                     name: {
                         type: String
                     },
+                    email: {
+                        type: String
+                    },
                     isSelected: {
                         type: Boolean
                     }

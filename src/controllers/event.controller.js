@@ -1,6 +1,7 @@
 const Event = require('./../models/event.schema');
 const User = require('./../models/user.schema');
 const { sendEmail } = require('./../utilities/utils');
+const axios = require('axios');
 
 const createEvent = async (req, res) => {
     try {
@@ -287,6 +288,67 @@ const publishEvent = async (req, res) => {
     }
 };
 
+const sendCertificates = async (req, res) => {
+    try {
+        const event = await Event.findById(req.params.id);
+
+        if (!event) {
+            res.status(404).json({
+                message: 'event not found & certification generation failed'
+            });
+        } else {
+            if (event.rsvp === 0) {
+                res.status(400).json({
+                    message: 'no registrations for events'
+                });
+            } else {
+                if (!event.isSelected) {
+                    for (const item of event.rsvp) {
+                        const res = await axios.post(
+                            'https://typer-pdf-generate-api/api/pdf/certificate',
+                            {
+                                _id: item.id,
+                                name: item.name
+                            }
+                        );
+                        const eventName = event.name;
+                        const clubName = req.user.name;
+                        const subject = `Events Certificates!`;
+                        const body = `Dear participant, \n Congratulations! Your certificate for ${eventName} organised by ${clubName} is here \n \n Certificate Link: ${res.data.data.url}`;
+                        await sendEmail(item.email, subject, body);
+                    }
+                } else {
+                    for (const item of event.rsvp) {
+                        if (item.isSelected) {
+                            const res = await axios.post(
+                                'https://typer-pdf-generate-api/api/pdf/certificate',
+                                {
+                                    _id: item.id,
+                                    name: item.name
+                                }
+                            );
+                            const eventName = event.name;
+                            const clubName = req.user.name;
+                            const subject = `Events Certificates!`;
+                            const body = `Dear participant, \n Congratulations! Your certificate for ${eventName} organised by ${clubName} is here \n \n Certificate Link: ${res.data.data.url}`;
+                            await sendEmail(item.email, subject, body);
+                        }
+                    }
+                }
+                res.status(200).json({
+                    message:
+                        'Certificates generated and sent to the participant'
+                });
+            }
+        }
+    } catch (error) {
+        console.error(error.message);
+        res.status(500).json({
+            message: error.message
+        });
+    }
+};
+
 module.exports = {
     createEvent,
     getEventList,
@@ -294,5 +356,6 @@ module.exports = {
     updateEvent,
     respondQuery,
     shortListing,
-    publishEvent
+    publishEvent,
+    sendCertificates
 };

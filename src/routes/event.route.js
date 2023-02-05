@@ -7,7 +7,8 @@ const {
     updateEvent,
     respondQuery,
     shortListing,
-    publishEvent
+    publishEvent,
+    sendCertificates
 } = require('../controllers/event.controller');
 const upload = require('./../utilities/multer');
 
@@ -54,6 +55,12 @@ router.patch(
     '/publish/:id',
     [auth.verifyJwt, auth.accountActivatedTrue, auth.roleClub],
     publishEvent
+);
+
+router.post(
+    '/send-certificates/:id',
+    [auth.verifyJwt, auth.accountActivatedTrue, auth.roleClub],
+    sendCertificates
 );
 
 module.exports = router;
