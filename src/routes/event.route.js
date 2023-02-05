@@ -21,11 +21,7 @@ router.post(
     createEvent
 );
 
-router.get(
-    '/',
-    [auth.verifyJwt, auth.accountActivatedTrue, auth.roleClub],
-    getEventList
-);
+router.get('/', getEventList);
 
 router.get(
     '/:id',
