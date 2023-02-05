@@ -5,7 +5,7 @@ import { Tab } from "@headlessui/react";
 import { useState, useEffect, useContext } from "react";
 import EventsServices from "../../services/EventsServices";
 import CreateEventForm from "./CreateEventForm";
-import Calendar from "./Calendar";
+import TimeSlots from "./TimeSlots";
 import { v4 as uuidv4 } from "uuid";
 import { appContext } from "../../context";
 import {
@@ -25,6 +25,7 @@ export default function CreateEvent() {
   const { token } = useContext(appContext);
   // console.log(token);
   const [imageUpload, setImageUpload] = useState();
+  const [selectedIndex, setSelectedIndex] = useState(0);
   const [approvalBodiesList, setApprovalBodiesList] = useState();
   const [approvePayload, setApprovePayload] = useState([]);
   const [checked, setChecked] = useState([]);
@@ -39,6 +40,11 @@ export default function CreateEvent() {
     isPayment: false,
     amount: 0,
     approval: [],
+    resourcesRequired: "",
+    eventWebsite: "",
+    estimatedBudget: 0,
+    noOfVolunteers: 0,
+    sponsorsAcquired: "",
   });
 
   const handleCheck = (event) => {
@@ -81,17 +87,6 @@ export default function CreateEvent() {
   console.log(payload);
   const handleClick = async () => {
     setLoad(true);
-    var formData = require("form-data");
-    const event = new formData();
-    event.append("name", `${payload.name}`);
-    event.append("description", payload.description);
-    event.append("date", payload.date);
-    event.append("thumbnail", payload.thumbnail);
-    event.append("isSelection", payload.isSelection);
-    event.append("isPayment", payload.isPayment);
-    event.append("amount", payload.amount);
-    event.append("approval", payload.approval);
-    console.log(event);
     await EventsServices.createEvent(payload, token).then((res) => {
       console.log(res);
     });
@@ -104,11 +99,25 @@ export default function CreateEvent() {
       <Navbar />
 
       <div>
-        <Tab.Group>
+        <Tab.Group selectedIndex={selectedIndex} onChange={setSelectedIndex}>
           <Tab.List
             // as={Fragment}
-            className="mt-8 flex  items-center justify-center w-1/2 rounded-xl bg-bdazzledblue lg:mx-96 p-1"
+            className="mt-8 flex  items-center justify-center w-1/2 rounded-xl bg-indigo-600 lg:mx-96 p-1"
           >
+            <Tab
+              index={0}
+              className={({ selected }) =>
+                classNames(
+                  "w-full rounded-lg py-3.5 text-md font-medium leading-5 text-indigo-600",
+                  "ring-white ring-opacity-60 ring-offset-2 ring-offset-blue-400 focus:outline-none focus:ring-2",
+                  selected
+                    ? "bg-white shadow text-indigo-600"
+                    : "text-blue-100 hover:bg-white/[0.12] hover:text-white"
+                )
+              }
+            >
+              Event Registration
+            </Tab>
             <Tab
               index={1}
               className={({ selected }) =>
@@ -116,12 +125,12 @@ export default function CreateEvent() {
                   "w-full rounded-lg py-3.5 text-md font-medium leading-5 text-indigo-600",
                   "ring-white ring-opacity-60 ring-offset-2 ring-offset-blue-400 focus:outline-none focus:ring-2",
                   selected
-                    ? "bg-white shadow text-bdazzledblue"
+                    ? "bg-white shadow text-indigo-600"
                     : "text-blue-100 hover:bg-white/[0.12] hover:text-white"
                 )
               }
             >
-              Event Registration
+              Request Permission
             </Tab>
             <Tab
               index={2}
@@ -130,21 +139,7 @@ export default function CreateEvent() {
                   "w-full rounded-lg py-3.5 text-md font-medium leading-5 text-indigo-600",
                   "ring-white ring-opacity-60 ring-offset-2 ring-offset-blue-400 focus:outline-none focus:ring-2",
                   selected
-                    ? "bg-white shadow text-bdazzledblue"
-                    : "text-blue-100 hover:bg-white/[0.12] hover:text-white"
-                )
-              }
-            >
-              Request Permission
-            </Tab>
-            <Tab
-              index={3}
-              className={({ selected }) =>
-                classNames(
-                  "w-full rounded-lg py-3.5 text-md font-medium leading-5 text-indigo-600",
-                  "ring-white ring-opacity-60 ring-offset-2 ring-offset-blue-400 focus:outline-none focus:ring-2",
-                  selected
-                    ? "bg-white shadow text-bdazzledblue"
+                    ? "bg-white shadow text-indigo-600"
                     : "text-blue-100 hover:bg-white/[0.12] hover:text-white"
                 )
               }
@@ -251,7 +246,7 @@ export default function CreateEvent() {
                       </div>
                       <div className="mt-5 md:col-span-2 md:mt-0">
                         <form action="#" method="POST">
-                          <div className="overflow-hidden shadow sm:rounded-md">
+                          <div className="overflow-hidden shadow-md sm:rounded-md">
                             <div className="bg-white px-4 py-5 sm:p-6">
                               <div className="grid grid-cols-6 gap-6">
                                 <div className="col-span-6">
@@ -275,51 +270,30 @@ export default function CreateEvent() {
                                 </div>
 
                                 <div className="col-span-6">
-                                  <label className="block text-sm font-medium text-gray-700">
-                                    Thumbnail
-                                  </label>
-                                  <div className="mt-1 flex justify-center rounded-md border-2 border-dashed border-gray-300 px-6 pt-5 pb-6">
-                                    <div className="space-y-1 text-center">
-                                      <svg
-                                        className="mx-auto h-12 w-12 text-gray-400"
-                                        stroke="currentColor"
-                                        fill="none"
-                                        viewBox="0 0 48 48"
-                                        aria-hidden="true"
-                                      >
-                                        <path
-                                          d="M28 8H12a4 4 0 00-4 4v20m32-12v8m0 0v8a4 4 0 01-4 4H12a4 4 0 01-4-4v-4m32-4l-3.172-3.172a4 4 0 00-5.656 0L28 28M8 32l9.172-9.172a4 4 0 015.656 0L28 28m0 0l4 4m4-24h8m-4-4v8m-12 4h.02"
-                                          strokeWidth={2}
-                                          strokeLinecap="round"
-                                          strokeLinejoin="round"
+                                  <div>
+                                    <form>
+                                      <div className="relative">
+                                        <input
+                                          class="block w-full text-sm  border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none "
+                                          name="thumbnail"
+                                          type="file"
+                                          onChange={(e) =>
+                                            setImageUpload(e.target.files[0])
+                                          }
                                         />
-                                      </svg>
-                                      <div className="flex text-sm text-gray-600">
-                                        <label
-                                          htmlFor="file-upload"
-                                          className="relative cursor-pointer rounded-md bg-white font-medium text-indigo-600 focus-within:outline-none focus-within:ring-2 focus-within:ring-indigo-500 focus-within:ring-offset-2 hover:text-indigo-500"
+
+                                        <button
+                                          onClick={uploadFile}
+                                          type="button"
+                                          class="text-white absolute right-0 bottom-0.5 bg-burntsienna hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-tr-lg rounded-br-lg text-sm px-4 py-2.5 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
                                         >
-                                          {/* <span>Upload a file</span> */}
-                                          <input
-                                            name="thumbnail"
-                                            type="file"
-                                            onChange={(event) => {
-                                              setImageUpload(
-                                                event.target.files[0]
-                                              );
-                                              uploadFile();
-                                            }}
-                                          />
-                                        </label>
-                                        {/* <p className="pl-1">or drag and drop</p> */}
+                                          Upload
+                                        </button>
                                       </div>
-                                      {/* <p className="text-xs text-gray-500">
-                              PNG, JPG, GIF up to 10MB
-                            </p> */}
-                                    </div>
+                                    </form>
                                   </div>
                                 </div>
-                                <div className="col-span-6">
+                                <div className="col-span-3">
                                   <label
                                     htmlFor="about"
                                     className="block text-sm font-medium text-gray-700"
@@ -346,8 +320,31 @@ export default function CreateEvent() {
                                     Brief description for the event.
                                   </p>
                                 </div>
+                                <div className="col-span-3">
+                                  <label
+                                    htmlFor="about"
+                                    className="block text-sm font-medium text-gray-700"
+                                  >
+                                    Resources
+                                  </label>
+                                  <div className="mt-1">
+                                    <input
+                                      type="text"
+                                      name="resources"
+                                      onChange={(e) => {
+                                        setPayload({
+                                          ...payload,
+                                          resourcesRequired: e.target.value,
+                                        });
+                                      }}
+                                      className="mt-1 block  w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+                                      placeholder="Resources Required"
+                                      defaultValue={""}
+                                    />
+                                  </div>
+                                </div>
                                 {/* <br /> */}
-                                <div className="col-span-6">
+                                <div className="col-span-3">
                                   <label
                                     htmlFor="city"
                                     className="block text-sm font-medium text-gray-700"
@@ -356,12 +353,110 @@ export default function CreateEvent() {
                                   </label>
                                   <input
                                     type="date"
-                                    name="date"
-                                    autoComplete="address-level2"
+                                    name="start_date"
+                                    onChange={(e) => {
+                                      setPayload({
+                                        ...payload,
+                                        startDate: e.target.value,
+                                      });
+                                    }}
+                                    className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+                                  />
+                                </div>
+                                <div className="col-span-3">
+                                  <label
+                                    htmlFor="city"
+                                    className="block text-sm font-medium text-gray-700"
+                                  >
+                                    Date
+                                  </label>
+                                  <input
+                                    type="date"
+                                    name="end_date"
+                                    onChange={(e) => {
+                                      setPayload({
+                                        ...payload,
+                                        endDate: e.target.value,
+                                      });
+                                    }}
+                                    className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+                                  />
+                                </div>
+                                <div className="col-span-3">
+                                  <label
+                                    htmlFor="city"
+                                    className="block text-sm font-medium text-gray-700"
+                                  >
+                                    Volunteers
+                                  </label>
+                                  <input
+                                    type="number"
+                                    name="noOfVolunteers"
+                                    placeholder="Number of Volunteers"
                                     onChange={(e) => {
                                       setPayload({
                                         ...payload,
                                         date: e.target.value,
+                                      });
+                                    }}
+                                    className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+                                  />
+                                </div>
+                                <div className="col-span-3">
+                                  <label
+                                    htmlFor="city"
+                                    className="block text-sm font-medium text-gray-700"
+                                  >
+                                    Budget
+                                  </label>
+                                  <input
+                                    type="number"
+                                    name="noOfVolunteers"
+                                    placeholder="Estimated Budget"
+                                    onChange={(e) => {
+                                      setPayload({
+                                        ...payload,
+                                        estimatedBudget: e.target.value,
+                                      });
+                                    }}
+                                    className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+                                  />
+                                </div>
+                                <div className="col-span-3">
+                                  <label
+                                    htmlFor="city"
+                                    className="block text-sm font-medium text-gray-700"
+                                  >
+                                    Website
+                                  </label>
+                                  <input
+                                    type="text"
+                                    name="event_website"
+                                    placeholder="Event Website Link"
+                                    onChange={(e) => {
+                                      setPayload({
+                                        ...payload,
+                                        eventWebsite: e.target.value,
+                                      });
+                                    }}
+                                    className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+                                  />
+                                </div>
+                                <div className="col-span-3">
+                                  <label
+                                    htmlFor="city"
+                                    className="block text-sm font-medium text-gray-700"
+                                  >
+                                    Sponsors
+                                  </label>
+                                  <input
+                                    type="text"
+                                    name="sponsors"
+                                    placeholder="Sponsors Acquired"
+                                    onChange={(e) => {
+                                      setPayload({
+                                        ...payload,
+                                        sponsorsAcquired: e.target.value,
                                       });
                                     }}
                                     className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
@@ -379,7 +474,7 @@ export default function CreateEvent() {
                                             isSelection: e.target.checked,
                                           });
                                         }}
-                                        className="h-4 w-4 rounded border-gray-300 text-indigo-600"
+                                        className="h-4 w-4 rounded border-gray-300 text-burntsienna"
                                       />
                                     </div>
                                     <div className="ml-3 text-sm">
@@ -406,7 +501,7 @@ export default function CreateEvent() {
                                             isPayment: e.target.checked,
                                           });
                                         }}
-                                        className="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500"
+                                        className="h-4 w-4 rounded border-gray-300 text-burntsienna"
                                       />
                                     </div>
                                     <div className="ml-3 text-sm">
@@ -451,21 +546,15 @@ export default function CreateEvent() {
                             <div className="bg-gray-50 px-4 py-3 text-right sm:px-6">
                               <button
                                 type="button"
-                                onClick={handleClick}
+                                onClick={() => setSelectedIndex(1)}
                                 className="inline-flex justify-center rounded-md border border-transparent bg-indigo-600 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
                               >
-                                Save
+                                Next
                               </button>
                             </div>
                           </div>
                         </form>
                       </div>
-                    </div>
-                  </div>
-
-                  <div className="hidden sm:block" aria-hidden="true">
-                    <div className="py-5">
-                      <div className="border-t border-gray-200" />
                     </div>
                   </div>
                 </div>
@@ -477,25 +566,25 @@ export default function CreateEvent() {
                   <div className="md:col-span-1">
                     <div className="px-4 sm:px-0">
                       <h3 className="text-lg font-medium leading-6 text-gray-900">
-                        Notifications
+                        Faculty/Administration Approval
                       </h3>
-                      <p className="mt-1 text-sm text-gray-600">
-                        Decide which communications you'd like to receive and
-                        how.
+                      <p className="mt-1 text-sm text-gray-500 w-[25em]">
+                        Decide which college bodies would be approving your
+                        proposed event.
                       </p>
                     </div>
                   </div>
                   <div className="mt-5 md:col-span-2 md:mt-0">
                     <form action="#" method="POST">
-                      <div className="overflow-hidden shadow sm:rounded-md">
+                      <div className="overflow-hidden shadow-md sm:rounded-md">
                         <div className="space-y-6 bg-white px-4 py-5 sm:p-6">
                           <fieldset>
-                            <legend className="sr-only">By Email</legend>
+                            <legend className="sr-only">Approval Bodies</legend>
                             <div
-                              className="text-base font-medium text-gray-900"
+                              className="text-lg font-semibold text-gray-900"
                               aria-hidden="true"
                             >
-                              By Email
+                              Approval Bodies
                             </div>
                             <div className="mt-4 space-y-4">
                               {approvalBodiesList?.map((item) => (
@@ -530,24 +619,25 @@ export default function CreateEvent() {
                                           approval: updatedList,
                                         });
                                       }}
-                                      className="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500"
+                                      className="h-6 w-6 rounded border-gray-400 text-burntsienna mt-24"
                                     />
                                   </div>
+
                                   <div
                                     href="#"
-                                    class="flex flex-col items-center bg-white border border-gray-200 rounded-lg shadow md:flex-row w-full  dark:border-gray-700 dark:bg-gray-800 dark:hover:bg-gray-700"
+                                    class="flex flex-col items-center bg-indigo-50 border border-gray-200 rounded-lg shadow-sm md:flex-row w-full  dark:border-gray-700 dark:bg-gray-800 dark:hover:bg-gray-700"
                                   >
                                     <img
-                                      class="lg:h-28 lg:w-28 rounded-t-lg h-96 md:h-auto md:w-48 md:rounded-none md:rounded-l-lg"
-                                      src="https://images.unsplash.com/photo-1661956602139-ec64991b8b16?ixlib=rb-4.0.3&ixid=MnwxMjA3fDF8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=365&q=80"
+                                      class="lg:h-28 lg:w-28 bg-white rounded-t-lg h-96 md:h-auto md:w-48 md:rounded-none md:rounded-l-lg"
+                                      src={item?.thumbnail}
                                       alt=""
                                     />
                                     <div class="flex flex-col justify-between p-4 leading-normal">
                                       <h5 class="mb-2 text-xl font-bold tracking-tight text-gray-900 dark:text-white">
-                                        {item.name}
+                                        {item?.name}
                                       </h5>
                                       <p class="mb-3 font-normal text-gray-700 dark:text-gray-400">
-                                        {item.email}
+                                        {item?.email}
                                       </p>
                                     </div>
                                   </div>
@@ -556,12 +646,13 @@ export default function CreateEvent() {
                             </div>
                           </fieldset>
                         </div>
-                        <div className="bg-gray-50 px-4 py-3 text-right sm:px-6">
+                        <div className="px-4 py-3 text-right sm:px-6">
                           <button
-                            type="submit"
+                            type="button"
+                            onClick={handleClick}
                             className="inline-flex justify-center rounded-md border border-transparent bg-indigo-600 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
                           >
-                            Save
+                            Submit
                           </button>
                         </div>
                       </div>
@@ -570,7 +661,9 @@ export default function CreateEvent() {
                 </div>
               </div>
             </Tab.Panel>
-            <Tab.Panel>Check Available Status</Tab.Panel>
+            <Tab.Panel>
+              <TimeSlots />
+            </Tab.Panel>
           </Tab.Panels>
         </Tab.Group>
       </div>
