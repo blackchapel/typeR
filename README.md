@@ -70,6 +70,10 @@ npm start
 - If everything executed properly, you will get a log `Connected at 3001` on the console.
 - Hurray! The web would now be up and running on `http://localhost:3001/`
 
+## Screenshots
+![image](https://user-images.githubusercontent.com/80096027/216803844-030aa213-4df3-4bc8-aa95-d75297a81eb7.png)
+![image](https://user-images.githubusercontent.com/80096027/216803847-03ce9404-898f-43da-91a6-a0758a80dded.png)
+
 ## Contributers
 
 - [Devang S - Frontend / ML](https://github.com/Devang-Shah-49)
