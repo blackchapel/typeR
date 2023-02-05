@@ -14,8 +14,8 @@ export default function StudentEventDetails() {
   return (
     <div>
     <Navbar/>
-        {/* <StudentModal/> */}
-        <EventPage/>
+        <StudentModal/>
+        {/* <EventPage/> */}
     <Footer/>
     </div>
   )

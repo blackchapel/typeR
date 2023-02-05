@@ -2,6 +2,7 @@ import { Fragment, useRef, useState } from 'react'
 import { Dialog, Transition } from '@headlessui/react'
 import { ExclamationTriangleIcon } from '@heroicons/react/24/outline'
 import { useLocation, useNavigate } from 'react-router-dom';
+import Swal from "sweetalert2";
 
 export default function StudentModal() {
   const navigate = useNavigate();
@@ -11,7 +12,17 @@ export default function StudentModal() {
   console.log(obj)
   const [open, setOpen] = useState(false);
   // useEffect
-
+  const handleSubmit = async(e)=>{
+    Swal.fire({
+      title: "Success",
+      text: "Registration Sucessful",
+      icon: "success",
+      confirmButtonText: "Confirm",
+    }).then(() => {
+      window.location.reload();
+      // setOpen(false);
+    });
+  }
   const cancelButtonRef = useRef(null)
 
   return (
@@ -143,27 +154,26 @@ export default function StudentModal() {
           <span class="title-font font-medium">Dates: 7th Feb, 2023</span>
         </div>
       </div>
-      </div>
-      {/* <div class="p-2 sm:w-1/2 w-full">
-        <div class="bg-gray-100 rounded flex h-full items-center">
-          <svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="3" class="text-indigo-500 w-6 h-6 flex-shrink-0 mr-4" viewBox="0 0 24 24">
-            <path d="M22 11.08V12a10 10 0 11-5.93-9.14"></path>
-            <path d="M22 4L12 14.01l-3-3"></path>
-          </svg>
-          <span class="title-font font-medium">Pack Truffaut Blue</span>
-        </div>
-      </div> */}
-      {/* <div class="p-2 sm:w-1/2 w-full">
+      <div class="p-2 sm:w-1/2 w-full">
         <div class="bg-gray-100 rounded flex p-4 h-full items-center">
           <svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="3" class="text-indigo-500 w-6 h-6 flex-shrink-0 mr-4" viewBox="0 0 24 24">
             <path d="M22 11.08V12a10 10 0 11-5.93-9.14"></path>
             <path d="M22 4L12 14.01l-3-3"></path>
           </svg>
-          <span class="title-font font-medium">The Catcher In The Rye</span>
+          <span class="title-font font-medium">Registration Fees {obj?.payment?.isPayment}</span>
         </div>
-      </div>  */}
-    <button onClick={setOpen(true)} class="flex mx-auto mt-16 text-white bg-indigo-500 border-0 py-2 px-8 focus:outline-none hover:bg-indigo-600 rounded text-lg">Register </button>
-    {/* <StudentModal onClick/> */}
+      </div>
+      <div class="p-2 sm:w-1/2 w-full">
+        <div class="bg-gray-100 rounded flex p-4 h-full items-center">
+          <svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="3" class="text-indigo-500 w-6 h-6 flex-shrink-0 mr-4" viewBox="0 0 24 24">
+            <path d="M22 11.08V12a10 10 0 11-5.93-9.14"></path>
+            <path d="M22 4L12 14.01l-3-3"></path>
+          </svg>
+          <span class="title-font font-medium">Registration Amount{obj?.payment?.amount}</span>
+        </div>
+      </div>
+      </div>
+    <button onClick={handleSubmit} className="flex mx-auto mt-16 text-white bg-indigo-500 border-0 py-2 px-8 focus:outline-none hover:bg-indigo-600 rounded text-lg">Register </button>
   </div>
 </section>
                   {/* <p class="leading-relaxed text-lg mb-4">{obj?.description}</p> */}
