@@ -6,6 +6,7 @@ import PDFDocument from 'pdfkit';
 // import * as cloudinary from './config';
 import fs from 'fs';
 import dotenv from 'dotenv';
+dotenv.config();
 
 import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
 import { storage } from './config.js';
@@ -14,7 +15,7 @@ import { storage } from './config.js';
 const app = express();
 
 // Server Port
-const PORT = 5002;
+const PORT = process.env.PORT;
 
 // Formatting incoming data and allowing cross origin requests
 app.use(cors({ origin: true }));
