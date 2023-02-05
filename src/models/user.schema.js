@@ -49,7 +49,12 @@ const userSchema = new mongoose.Schema(
             {
                 type: {
                     id: {
+<<<<<<< HEAD
                         type: String
+=======
+                        type: mongoose.Schema.Types.ObjectId,
+                        ref: 'Event'
+>>>>>>> 2ab4c92378f0fa35536db0ab24b99003ee876cc8
                     },
                     name: {
                         type: String
