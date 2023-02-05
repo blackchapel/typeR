@@ -76,9 +76,9 @@ const eventsList = async (req, res) => {
             if (events.length) {
                 events.forEach((item) => {
                     user.registeredEvents.forEach((itemInception) => {
-                        console.log(itemInception.id);
-                        console.log(item._id);
-                        if (itemInception.id === item._id) {
+                        if (
+                            itemInception.id.toString() === item._id.toString()
+                        ) {
                             registeredEvents.push(item);
                         }
                     });
