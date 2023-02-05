@@ -8,7 +8,8 @@ const {
     respondQuery,
     shortListing,
     publishEvent,
-    sendCertificates
+    sendCertificates,
+    getEventListNoAuth
 } = require('../controllers/event.controller');
 const upload = require('./../utilities/multer');
 
@@ -62,5 +63,7 @@ router.post(
     [auth.verifyJwt, auth.accountActivatedTrue, auth.roleClub],
     sendCertificates
 );
+
+router.get('/no-auth', getEventListNoAuth);
 
 module.exports = router;
