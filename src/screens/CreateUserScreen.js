@@ -1,4 +1,4 @@
-import React from 'react';
+import react from 'React';
 import { FlatList, View } from 'react-native';
 
 import EventCardComponent from '../components/EventCardComponent';
@@ -56,5 +56,3 @@ const HomeScreen = () => {
     />
   );
 };
-
-export default HomeScreen;

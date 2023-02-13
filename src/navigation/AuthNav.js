@@ -1,27 +1,30 @@
-import React from 'react';
+import { createMaterialBottomTabNavigator } from '@react-navigation/material-bottom-tabs';
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
-
-import AppNav from './AppNav';
 import LoginScreen from '../screens/LoginScreen';
-import RegisterScreen from '../screens/RegisterScreen';
-import SendOtpScreen from '../screens/SendOtpScreen';
-import OtpVerificationScreen from '../screens/OtpVerificationScreen';
-import ResetPasswordScreen from '../screens/ResetPasswordScreen';
+import HomeScreen from '../screens/HomeScreen';
 
-const Stack = createNativeStackNavigator();
+const Tab = createMaterialBottomTabNavigator();
 
-const AuthNav = () => {
+function AuthNav() {
   return (
-    <Stack.Navigator screenOptions={{ headerShown: false }}>
-      <Stack.Screen component={LoginScreen} name="Login" />
-      <Stack.Screen component={SendOtpScreen} name="SendOtp" />
-      <Stack.Screen component={OtpVerificationScreen} name="OtpVerify" />
-      <Stack.Screen component={ResetPasswordScreen} name="ResetPassword" />
-      <Stack.Screen component={AppNav} name="AppNav" />
-      <Stack.Screen component={RegisterScreen} name="Register" />
-    </Stack.Navigator>
+    <Tab.Navigator
+    //   activeColor="#98C1D9"
+    //   barStyle={{ backgroundColor: '#293241' }}
+    >
+      <Tab.Screen
+        name="Home"
+        component={LoginScreen}
+        options={{
+          tabBarLabel: 'Home',
+          tabBarIcon: ({ color }) => (
+            <MaterialCommunityIcons name="home" color={color} size={26} />
+          )
+        }}
+      />
+      <Tab.Screen name="Settings" component={HomeScreen} />
+    </Tab.Navigator>
   );
-};
+}
 
 export default AuthNav;
